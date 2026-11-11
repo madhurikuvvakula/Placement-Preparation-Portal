@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Result</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="result-container">
+
+        <h1>🎉 Test Completed!</h1>
+
+        <p>Great job on completing the aptitude test!</p>
+
+        <h2>Your Score</h2>
+
+        <div class="score">
+            {{ score }} / 5
+        </div>
+
+        <div class="percentage">
+            {{ (score / 5 * 100)|int }}%
+        </div>
+
+        {% if score == 5 %}
+
+            <h3>🌟 Excellent Performance!</h3>
+            <p>You answered all questions correctly.</p>
+
+        {% elif score >= 3 %}
+
+            <h3>👍 Good Job!</h3>
+            <p>You have a good understanding. Keep practicing!</p>
+
+        {% else %}
+
+            <h3>💪 Keep Practicing!</h3>
+            <p>Don't worry. Practice more and improve your score.</p>
+
+        {% endif %}
+
+        <div class="result-buttons">
+
+            <a href="/aptitude">
+                <button>🔄 Retake Test</button>
+            </a>
+
+            <a href="/dashboard">
+                <button>🏠 Back to Dashboard</button>
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solve Coding Problem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            margin: 0;
+            padding: 25px;
+            color: #222;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px #0001;
+        }
+        a { color: #087bff; text-decoration: none; }
+        .box {
+            background: #f7f9fc;
+            padding: 16px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #e1e5eb;
+        }
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 300px;
+            padding: 14px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+        }
+        select, button {
+            padding: 12px 16px;
+            border-radius: 7px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+        button {
+            background: #087bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        pre {
+            white-space: pre-wrap;
+            background: #151a23;
+            color: #e9f1ff;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .success { color: #16833b; font-weight: bold; }
+        .error { color: #c62828; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <p><a href="/coding">← Back to Coding Problems</a></p>
+
+    <h1>{{ problem.title }}</h1>
+    <p><b>Difficulty:</b> {{ problem.difficulty }}</p>
+
+    <div class="box">
+        <h3>Problem Description</h3>
+        <p>{{ problem.description }}</p>
+    </div>
+
+    <div class="box">
+        <h3>Sample Input</h3>
+        <pre>{{ problem.sample_input }}</pre>
+
+        <h3>Sample Output</h3>
+        <pre>{{ problem.sample_output }}</pre>
+    </div>
+
+    {% if result %}
+        <div class="box">
+            {% if result.success %}
+                <p class="success">✅ {{ result.message }}</p>
+            {% else %}
+                <p class="error">❌ {{ result.message }}</p>
+            {% endif %}
+
+            {% if result.output is defined %}
+                <h3>Your Output</h3>
+                <pre>{{ result.output }}</pre>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <form method="POST" action="/coding/{{ problem.id }}">
+        <h3>Choose Programming Language</h3>
+
+        <select name="language" required>
+            <option value="python" {% if selected_language == 'python' %}selected{% endif %}>Python</option>
+            <option value="c" {% if selected_language == 'c' %}selected{% endif %}>C</option>
+            <option value="cpp" {% if selected_language == 'cpp' %}selected{% endif %}>C++</option>
+            <option value="java" {% if selected_language == 'java' %}selected{% endif %}>Java</option>
+        </select>
+
+        <h3>Write Your Code</h3>
+        <textarea name="code" required placeholder="Write your solution here...">{{ submitted_code or '' }}</textarea>
+
+        <p><button type="submit">Run Code & Check Answer</button></p>
+    </form>
+
+</div>
+</body>
+</html>
+```

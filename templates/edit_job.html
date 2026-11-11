@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Job</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/jobs" class="back">
+        ← Back to Job Tracker
+    </a>
+
+    <div class="form-box">
+
+        <h1>✏️ Edit Job</h1>
+
+        <form method="POST">
+
+
+            <label>Company Name</label>
+
+            <input
+                type="text"
+                name="company"
+                value="{{ job['company'] }}"
+                required
+            >
+
+
+            <label>Job Role</label>
+
+            <input
+                type="text"
+                name="role"
+                value="{{ job['role'] }}"
+                required
+            >
+
+
+            <label>Application Date</label>
+
+            <input
+                type="date"
+                name="application_date"
+                value="{{ job['application_date'] }}"
+            >
+
+
+            <label>Status</label>
+
+            <select name="status">
+
+                {% for status in [
+                    "Not Applied",
+                    "Applied",
+                    "Online Test",
+                    "Interview",
+                    "Selected",
+                    "Rejected"
+                ] %}
+
+                    <option
+                        value="{{ status }}"
+                        {% if job['status'] == status %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ status }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Job URL</label>
+
+            <input
+                type="url"
+                name="job_url"
+                value="{{ job['job_url'] or '' }}"
+            >
+
+
+            <label>Notes</label>
+
+            <textarea
+                name="notes"
+            >{{ job['notes'] or '' }}</textarea>
+
+
+            <button type="submit">
+                Update Job
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aptitude Test</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="test-container">
+    <h1>📝 Aptitude Test</h1>
+    <p id="progress">Question 1 of {{ questions|length }}</p>
+
+    <form method="POST" action="/test" id="testForm">
+
+        {% for question in questions %}
+
+{% set question_number = loop.index0 %}
+
+<div class="question {% if loop.first %}active{% endif %}"
+     data-index="{{ question_number }}">
+
+    <h3>Question {{ loop.index }}</h3>
+    <p>{{ question.question }}</p>
+
+    {% for option in question.options %}
+    <label>
+        <input type="radio"
+               name="q{{ question_number }}"
+               value="{{ option }}"
+               required>
+        {{ option }}
+    </label>
+    <br>
+    {% endfor %}
+
+</div>
+{% endfor %}
+
+        <div class="nav-buttons">
+            <button type="button" id="previousBtn"
+                    onclick="changeQuestion(-1)" disabled>
+                Previous
+            </button>
+
+            <button type="button" id="nextBtn"
+                    onclick="changeQuestion(1)">
+                Next
+            </button>
+
+            <button type="submit" id="submitBtn" style="display:none;">
+                Submit Test
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    let currentQuestion = 0;
+
+    const questions = document.querySelectorAll(".question");
+    const previousBtn = document.getElementById("previousBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const progress = document.getElementById("progress");
+
+    function showQuestion() {
+        questions.forEach((question, index) => {
+            question.classList.toggle("active", index === currentQuestion);
+        });
+
+        previousBtn.disabled = currentQuestion === 0;
+
+        nextBtn.style.display =
+            currentQuestion === questions.length - 1 ? "none" : "inline-block";
+
+        submitBtn.style.display =
+            currentQuestion === questions.length - 1 ? "inline-block" : "none";
+
+        progress.textContent =
+            `Question ${currentQuestion + 1} of ${questions.length}`;
+    }
+
+    function changeQuestion(direction) {
+        const current = questions[currentQuestion];
+        const selected = current.querySelector('input[type="radio"]:checked');
+
+        if (direction === 1 && !selected) {
+            alert("Please select one option first!");
+            return;
+        }
+
+        currentQuestion += direction;
+        showQuestion();
+    }
+
+   document.getElementById("testForm").addEventListener("submit", function(event) {
+    for (let i = 0; i < questions.length; i++) {
+        const selected = questions[i]
+            .querySelector('input[type="radio"]:checked');
+
+        if (!selected) {
+            event.preventDefault();
+            currentQuestion = i;
+            showQuestion();
+            alert("Please answer Question " + (i + 1));
+            return;
+        }
+    }
+});
+
+    showQuestion();
+</script>
+
+</body>
+</html>

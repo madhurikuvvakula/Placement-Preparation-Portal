@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ problem.title }} - Coding Practice</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .problem-header,
+        .section {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+        }
+
+        .problem-number {
+            color: #777;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin: 8px 0;
+        }
+
+        .difficulty {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        .example-box {
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        select {
+            padding: 10px;
+            width: 200px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .editor {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            background: #1e1e1e;
+            color: white;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            resize: vertical;
+        }
+
+        .run-button {
+            background: #198754;
+            color: white;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .run-button:hover {
+            background: #146c43;
+        }
+
+        .success {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .result-card {
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .passed {
+            background: #e8f7ee;
+            border-left: 5px solid #28a745;
+        }
+
+        .failed {
+            background: #fdeaea;
+            border-left: 5px solid #dc3545;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-row {
+            margin: 8px 0;
+        }
+
+        .result-label {
+            font-weight: bold;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .list-button {
+            background: #6c757d;
+            color: white;
+        }
+
+        .next-button {
+            background: #198754;
+            color: white;
+        }
+
+        @media(max-width: 600px) {
+            .container {
+                width: 95%;
+            }
+
+            .editor {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/coding" class="back">
+        ← Back to Coding Problems
+    </a>
+
+    <!-- PROBLEM INFORMATION -->
+
+    <div class="problem-header">
+
+        <div class="problem-number">
+            Problem {{ problem.id }}
+        </div>
+
+        <h1>{{ problem.title }}</h1>
+
+        <div class="difficulty">
+            Difficulty: {{ problem.difficulty }}
+        </div>
+
+        <p class="description">
+            {{ problem.description }}
+        </p>
+
+    </div>
+
+    <!-- SAMPLE INPUT AND OUTPUT -->
+
+    <div class="section">
+
+        <h2>📥 Sample Input & Output</h2>
+
+        {% for sample_input, sample_output in problem.test_cases %}
+
+            <div class="example-box">
+
+                <h3>Sample Input {{ loop.index }}</h3>
+
+                <pre>{{ sample_input if sample_input else "No input required" }}</pre>
+
+                <h3>Sample Output {{ loop.index }}</h3>
+
+                <pre>{{ sample_output }}</pre>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- CODE EDITOR -->
+
+    <div class="section">
+
+        <h2>💻 Write Your Code</h2>
+
+        <p>Select your programming language:</p>
+
+        <form method="POST" id="codeForm">
+
+            <select name="language" id="language">
+
+                <option value="python"
+                    {% if request.form.get('language', 'python') == 'python' %}selected{% endif %}>
+                    Python
+                </option>
+
+                <option value="c"
+                    {% if request.form.get('language') == 'c' %}selected{% endif %}>
+                    C
+                </option>
+
+                <option value="cpp"
+                    {% if request.form.get('language') == 'cpp' %}selected{% endif %}>
+                    C++
+                </option>
+
+            </select>
+
+            <textarea
+                name="code"
+                class="editor"
+                placeholder="Write your code here..."
+            >{{ code|default('', true) }}</textarea>
+
+            <br>
+
+            <button type="submit" class="run-button">
+                ▶ Run Code
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- MESSAGE -->
+
+    {% if message %}
+
+        <div class="section"
+             style="white-space: pre-wrap; font-weight: bold; color: {% if results and passed_count == total_tests %}#146c43{% else %}#b02a37{% endif %};">
+
+            {{ message }}
+
+        </div>
+
+    {% endif %}
+
+    <!-- SUCCESS MESSAGE -->
+
+    {% if solved %}
+
+        <div class="success">
+
+            🎉 Congratulations!
+
+            <br><br>
+
+            ✅ You solved this problem successfully.
+
+            <br>
+
+            All test cases passed.
+
+        </div>
+
+    {% endif %}
+
+    <!-- TEST CASE RESULTS -->
+
+    {% if results %}
+
+        <div class="section">
+
+            <h2>🧪 Test Case Results</h2>
+
+            <p>
+                <strong>
+                    {{ passed_count }} / {{ total_tests }}
+                </strong>
+                test cases passed.
+            </p>
+
+            {% for result in results %}
+
+                <div class="result-card {% if result.passed %}passed{% else %}failed{% endif %}">
+
+                    <div class="result-title">
+
+                        {% if result.passed %}
+                            ✅ Test Case {{ loop.index }} — Passed
+                        {% else %}
+                            ❌ Test Case {{ loop.index }} — Failed
+                        {% endif %}
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span class="result-label">Input:</span>
+
+                        <pre>{{ result.input }}</pre>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span class="result-label">Expected Output:</span>
+
+                        <pre>{{ result.expected }}</pre>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span class="result-label">Your Output:</span>
+
+                        <pre>{{ result.actual }}</pre>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="/coding" class="nav-button list-button">
+            📋 Problem List
+        </a>
+
+        {% if problem.id < 20 %}
+
+            <a href="/coding/{{ problem.id + 1 }}" class="nav-button next-button">
+                Next Problem →
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

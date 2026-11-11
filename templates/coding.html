@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Python Coding Practice</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .header h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        /* =========================
+           STAT BOXES
+        ========================= */
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            flex: 1;
+            min-width: 180px;
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        .stat-box h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .stat-box p {
+            margin-bottom: 0;
+        }
+
+        /* =========================
+           PROGRESS
+        ========================= */
+
+        .progress-container {
+            margin-top: 25px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 18px;
+            background: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+       
+        
+        .progress {
+    height: 100%;
+    width: 0%;
+    background: #28a745;
+    transition: width 0.5s;
+}
+
+
+        
+
+        /* =========================
+           FILTER SECTION
+        ========================= */
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 9px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .filter-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* =========================
+           PROBLEM CARD
+        ========================= */
+
+        .problem-card {
+            background: white;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .problem-card.solved {
+            border-left: 6px solid #28a745;
+        }
+
+        .problem-info {
+            flex: 1;
+        }
+
+        .problem-number {
+            color: #777;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .problem-title {
+            font-size: 19px;
+            font-weight: bold;
+            margin: 5px 0 8px;
+        }
+
+        .difficulty {
+            font-size: 14px;
+        }
+
+        .solved-badge {
+            color: #198754;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .solve-btn {
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .solve-btn:hover {
+            background: #0056b3;
+        }
+
+        .no-results {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            display: none;
+        }
+
+        @media(max-width: 600px) {
+
+            .problem-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .solve-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/dashboard" class="back">
+        ← Back to Dashboard
+    </a>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>🐍 Python Coding Practice</h1>
+
+        <p>
+            Solve Python problems and improve your
+            programming skills for placements.
+        </p>
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+            <div class="stat-box">
+
+                <h2>
+                    🎯 {{ solved_count }}/{{ total_count }}
+                </h2>
+
+                <p>
+                    Problems Solved
+                </p>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <h2>
+                    🔥 {{ remaining_count }}
+                </h2>
+
+                <p>
+                    Problems Remaining
+                </p>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <h2>
+                    📊 {{ progress_percent }}%
+                </h2>
+
+                <p>
+                    Overall Progress
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS BAR -->
+
+        <div class="progress-container">
+
+            <div class="progress-bar">
+
+                <div class="progress"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FILTERS
+    ========================= -->
+
+    <div class="filter-section">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="🔎 Search Python problems..."
+            onkeyup="filterProblems()"
+        >
+
+
+        <div class="filters">
+
+            <button
+                class="filter-btn active"
+                onclick="setStatusFilter('all', this)"
+            >
+                All
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="setStatusFilter('solved', this)"
+            >
+                ✅ Solved
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="setStatusFilter('unsolved', this)"
+            >
+                ⬜ Unsolved
+            </button>
+
+
+            <button
+                class="filter-btn"
+                onclick="setDifficultyFilter('all', this)"
+            >
+                All Levels
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="setDifficultyFilter('Easy', this)"
+            >
+                ⭐ Easy
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="setDifficultyFilter('Medium', this)"
+            >
+                ⭐⭐⭐ Medium
+            </button>
+
+            <button
+                class="filter-btn"
+                onclick="setDifficultyFilter('Hard', this)"
+            >
+                ⭐⭐⭐⭐ Hard
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PROBLEMS
+    ========================= -->
+
+    <div id="problemList">
+
+        {% for problem in problems %}
+
+            <div
+                class="problem-card
+                {% if problem.id in solved_ids %}
+                    solved
+                {% endif %}
+                "
+
+                data-title="{{ problem.title|lower }}"
+
+                data-status="
+                {% if problem.id in solved_ids %}
+                    solved
+                {% else %}
+                    unsolved
+                {% endif %}
+                "
+
+                data-difficulty="
+                {% if 'Easy' in problem.difficulty %}
+                    Easy
+                {% elif 'Medium' in problem.difficulty %}
+                    Medium
+                {% else %}
+                    Hard
+                {% endif %}
+                "
+            >
+
+
+                <div class="problem-info">
+
+                    <div class="problem-number">
+                        Problem {{ problem.id }}
+                    </div>
+
+                    <div class="problem-title">
+                        {{ problem.title }}
+                    </div>
+
+                    <div class="difficulty">
+                        Difficulty:
+                        {{ problem.difficulty }}
+                    </div>
+
+                </div>
+
+
+                {% if problem.id in solved_ids %}
+
+                    <div class="solved-badge">
+                        ✅ Solved
+                    </div>
+
+                {% else %}
+
+                    <a
+                        href="/coding/{{ problem.id }}"
+                        class="solve-btn"
+                    >
+                        Solve →
+                    </a>
+
+                {% endif %}
+
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <div id="noResults" class="no-results">
+
+        <h3>🔍 No problems found</h3>
+
+        <p>
+            Try another search or filter.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    let currentStatus = "all";
+    let currentDifficulty = "all";
+
+
+    function setStatusFilter(status, button) {
+
+        currentStatus = status;
+
+        document
+            .querySelectorAll(".filter-btn")
+            .forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+        button.classList.add("active");
+
+        filterProblems();
+    }
+
+
+    function setDifficultyFilter(difficulty, button) {
+
+        currentDifficulty = difficulty;
+
+        filterProblems();
+    }
+
+
+    function filterProblems() {
+
+        const searchText =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+        const problems =
+            document.querySelectorAll(".problem-card");
+
+        let visibleCount = 0;
+
+
+        problems.forEach(problem => {
+
+            const title =
+                problem.dataset.title;
+
+            const status =
+                problem.dataset.status.trim();
+
+            const difficulty =
+                problem.dataset.difficulty.trim();
+
+
+            const matchesSearch =
+                title.includes(searchText);
+
+
+            const matchesStatus =
+                currentStatus === "all"
+                || status === currentStatus;
+
+
+            const matchesDifficulty =
+                currentDifficulty === "all"
+                || difficulty === currentDifficulty;
+
+
+            if (
+                matchesSearch &&
+                matchesStatus &&
+                matchesDifficulty
+            ) {
+
+                problem.style.display = "flex";
+
+                visibleCount++;
+
+            } else {
+
+                problem.style.display = "none";
+
+            }
+
+        });
+
+
+        if (visibleCount === 0) {
+
+            document
+                .getElementById("noResults")
+                .style.display = "block";
+
+        } else {
+
+            document
+                .getElementById("noResults")
+                .style.display = "none";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

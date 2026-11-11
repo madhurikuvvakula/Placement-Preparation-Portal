@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Tracker</title>
+    <style>
+        body { font-family: Arial; background: #f4f6f9; margin: 0; padding: 25px; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; padding: 20px; margin: 15px 0; border-radius: 12px; box-shadow: 0 2px 8px #ddd; }
+        a, button { display: inline-block; padding: 10px 15px; margin: 5px; border: 0; border-radius: 6px; background: #087bff; color: white; text-decoration: none; cursor: pointer; }
+        .green { background: #198754; }
+        .red { background: #dc3545; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/dashboard">← Dashboard</a>
+    <h1>💼 Job Tracker</h1>
+    <a class="green" href="/jobs/add">+ Add Job</a>
+
+    {% for job in jobs %}
+    <div class="card">
+        <h2>{{ job['company'] }}</h2>
+        <p><b>Role:</b> {{ job['role'] }}</p>
+        <p><b>Date:</b> {{ job['application_date'] or 'Not specified' }}</p>
+        <p><b>Status:</b> {{ job['status'] }}</p>
+
+        {% if job['job_url'] %}
+        <p><a href="{{ job['job_url'] }}" target="_blank">Open Job Link</a></p>
+        {% endif %}
+
+        {% if job['notes'] %}
+        <p><b>Notes:</b> {{ job['notes'] }}</p>
+        {% endif %}
+
+        <a href="/jobs/edit/{{ job['id'] }}">Edit</a>
+        <form action="/jobs/delete/{{ job['id'] }}" method="POST" style="display:inline"
+              onsubmit="return confirm('Delete this job?')">
+            <button class="red" type="submit">Delete</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="card">
+        <h3>No jobs added yet.</h3>
+        <p>Click Add Job to record your first application.</p>
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>

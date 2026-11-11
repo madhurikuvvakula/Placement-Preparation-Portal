@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add New Job</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 25px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+        }
+
+        button, a {
+            padding: 12px 18px;
+            background: #198754;
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .back {
+            background: #087bff;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="/jobs">Back to Jobs</a>
+
+    <h1>➕ Add New Job</h1>
+
+    <form method="POST" action="/jobs/add">
+
+        <label>Company Name *</label>
+        <input type="text" name="company"
+               placeholder="Example: TCS" required>
+
+        <label>Job Role *</label>
+        <input type="text" name="role"
+               placeholder="Example: Python Developer" required>
+
+        <label>Application Date</label>
+        <input type="date" name="application_date">
+
+        <label>Status</label>
+        <select name="status">
+            <option value="Not Applied">Not Applied</option>
+            <option value="Applied" selected>Applied</option>
+            <option value="Online Test">Online Test</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+
+        <label>Job Link</label>
+        <input type="url" name="job_url"
+               placeholder="https://example.com">
+
+        <label>Notes</label>
+        <textarea name="notes" rows="4"
+                  placeholder="Enter additional details"></textarea>
+
+        <button type="submit">Save Job</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

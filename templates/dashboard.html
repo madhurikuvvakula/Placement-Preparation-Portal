@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <h2>🎓 Placement Portal</h2>
+
+        <div>
+
+            <a href="/dashboard">Dashboard</a>
+
+            <a href="/aptitude">Aptitude</a>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="dashboard-container">
+
+        <h1>Welcome, {{ name }} 👋</h1>
+
+        <p>
+            Welcome to your Student Placement Preparation Portal.
+        </p>
+
+
+        <div class="stats-container">
+
+
+            <!-- Aptitude Score -->
+
+
+                <h3>📝 Aptitude Score</h3>
+
+                <div class="stat-number">
+
+                    {{ percentage }}%
+
+                </div>
+
+                <p>
+                    Score: {{ aptitude_score }} / 5
+                </p>
+
+            </div>
+
+
+            <!-- Tests Completed -->
+
+            <div class="stat-card">
+
+                <h3>📊 Tests Completed</h3>
+
+                <div class="stat-number">
+
+                    {{ test_count }}
+
+                </div>
+
+                <p>
+                    Aptitude Tests
+                </p>
+
+            </div>
+
+
+            <!-- Job Applications -->
+
+            <div class="stat-card">
+
+                <h3>💼 Job Applications</h3>
+
+               <div class="stat-number">
+                  {{ job_total }}
+             </div>
+
+                <p>
+                    Applications Tracked
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+            Placement Preparation
+        </h2>
+
+
+        
+<div class="features-container">
+
+    <!-- Aptitude -->
+    <div class="feature-card">
+        <h2>📝 Aptitude Practice</h2>
+        <p>Practice aptitude questions and improve your problem-solving skills.</p>
+        <a href="/aptitude">
+            <button type="button">Start Test</button>
+        </a>
+    </div>
+
+    <!-- Coding Practice -->
+    <div class="feature-card">
+        <h2>💻 Coding Practice</h2>
+        <p>Practice Python, C and C++ programming problems.</p>
+        <p><strong>{{ coding_solved }} / {{ coding_total }} Problems Solved</strong></p>
+        <p>{{ coding_remaining }} Problems Remaining</p>
+        <a href="/coding">
+            <button type="button">Start Coding Practice →</button>
+        </a>
+    </div>
+
+    <!-- Job Tracker -->
+    <div class="feature-card">
+        <h2>💼 Job Tracker</h2>
+        <p>Track your job applications and interview progress.</p>
+        <h3>{{ job_total }} Applications Tracked</h3>
+        <p>Applied: {{ job_applied }}</p>
+        <p>Interviews: {{ job_interview }}</p>
+        <p>Selected: {{ job_selected }}</p>
+        <p>Rejected: {{ job_rejected }}</p>
+        <a href="/jobs">
+            <button type="button">Open Job Tracker →</button>
+        </a>
+    </div>
+
+</div>
+
+</div>
+</body>
+</html>
